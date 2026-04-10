@@ -1,12 +1,17 @@
+import Filter from "../Filter/Filter";
 function Series() {
   return (
+
     <div className="container">
 
       <h2 className="alert alert-warning">Todas las series</h2>
+      <div>
+    <Filter/>
 
-      <form className="filter-form px-0 mb-3" action="" method="get">
-        <input type="text" name="filter" placeholder="Buscar dentro de la lista" />
-      </form>
+    <div className="container">
+      
+    </div>
+  </div>
 
       <button className="btn btn-warning">Cargar más</button>
 

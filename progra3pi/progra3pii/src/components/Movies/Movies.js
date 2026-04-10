@@ -1,4 +1,6 @@
 import React, {Component} from "react";  
+import MovieCard from "../MovieCard/MovieCard";
+import Filter from "../Filter/Filter";
 const apiKey ='5aba41484f01b327ba117f875007574f'
 class Movies extends Component {
   constructor(props) {
@@ -11,11 +13,7 @@ class Movies extends Component {
 
 
   componentDidMount() {
-    this.fetchMovies();
-  }
-
-  fetchMovies() {
-    fetch(`https://api.themoviedb.org/3/movie/now_playing?page=${this.state.pagina}&api_key=${apiKey}`)
+        fetch(`https://api.themoviedb.org/3/movie/now_playing?page=${this.state.pagina}&api_key=${apiKey}`)
       .then(res => res.json())
       .then(data => {
         this.setState({
@@ -25,10 +23,30 @@ class Movies extends Component {
       .catch(err => console.log(err));
   }
 
+ 
+
   render(){
     return(
-        <h1>Hola</h1>
-    )
+
+         
+  <div className="container">
+
+    <h2 className="alert alert-primary">Todas las películas</h2>
+    <Filter/>
+
+     
+
+    <section className="row cards">
+
+      {this.state.movies.map((movie, i) => (
+        <MovieCard key={movie.title + i} data={movie} />
+      ))}
+
+    </section>
+
+  </div>
+);
+    
   }
 
 }
