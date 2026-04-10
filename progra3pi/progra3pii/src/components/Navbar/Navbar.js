@@ -1,28 +1,29 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Navbar() {
   return (
      <nav>
             <h2>JoacoFede Movies</h2>
 
-            <ul class="nav nav-tabs my-4">
-                <li class="nav-item">
-                    <a class="nav-link" href="index.html">Home</a>
+            <ul className="nav nav-tabs my-4">
+                <li className="nav-item">
+                    <Link to="/" className="nav-link">Home</Link>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="movies.html">Películas</a>
+                <li className="nav-item">
+                    <Link to="/movies" className="nav-link">Películas</Link>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="series.html">Series</a>
+                <li className="nav-item">
+                    <Link to="/series" className="nav-link">Series</Link>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="favorites.html">Favoritas</a>
+                <li className="nav-item">
+                    <Link to="/favorites" className="nav-link">Favoritas</Link>
                 </li>
-                <li class="nav-item ml-auto">
-                    <a class="nav-link" href="register.html">Registro</a>
+                <li className="nav-item ml-auto">
+                    <Link to="/register" className="nav-link">Registro</Link>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="login.html">Login</a>
+                <li className="nav-item">
+                    <Link to="/login" className="nav-link">Login</Link>
                 </li>
             </ul>
         </nav>
