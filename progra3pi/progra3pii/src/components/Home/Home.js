@@ -1,5 +1,5 @@
 import React from "react";
-
+import Filter from "../Filter/Filter";
 function Home() {
   return (
     <div className="container">
@@ -7,10 +7,7 @@ function Home() {
       <h1>UdeSA Movies</h1>
 
        
-      <form className="search-form">
-        <input type="text" name="searchData" placeholder="Buscar..." />
-        <button type="submit" className="btn btn-success btn-sm">Buscar</button>
-      </form>
+      <Filter />
 
       <h2 className="alert alert-primary">Peliculas Mas Polupares</h2>
 

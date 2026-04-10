@@ -42,10 +42,10 @@ class Movies extends Component {
          
   <div className="container">
 
-    <h2 className="alert alert-primary">Todas las películas</h2>
+    <h2 className="">Todas las películas</h2>
     <Filter/>
 
-    <section className="row cards">
+    <section className="">
 
       {this.state.movies.map((movie, i) => (
         <MovieCard key={movie.title + i} data={movie} />
