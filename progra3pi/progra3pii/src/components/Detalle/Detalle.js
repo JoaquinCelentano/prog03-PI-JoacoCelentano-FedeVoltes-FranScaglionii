@@ -22,33 +22,83 @@ componentDidMount() {
 
 render() {
   return (
-    <section className="container">
+    <div className="container">
+
       {this.state.detalle && (
-        <article className="single-card-movie">
-          <img src={`https://image.tmdb.org/t/p/w500${this.state.detalle.poster_path}`} alt={this.state.detalle.title ? this.state.detalle.title : this.state.detalle.name} className="card-img-top"/>
 
-          <div className="card-body">
-            <h2> {this.state.detalle.title ? this.state.detalle.title : this.state.detalle.name} </h2>
+        <>
+          <h2 className="alert alert-warning">
+            {this.state.detalle.title ? this.state.detalle.title : this.state.detalle.name}
+          </h2>
 
-            <p>Calificación: {this.state.detalle.vote_average}</p>
+          <section className="row">
 
-            <p>Fecha de estreno:{" "} {this.state.detalle.release_date ? this.state.detalle.release_date : this.state.detalle.first_air_date}</p>
+            <section className="col-md-6 info">
 
-            {this.props.match.params.tipo === "movie" ? (
-              <p>Duración: {this.state.detalle.runtime} minutos</p>
-            ) : null}
+              <h3>Descripción</h3>
 
-            <p>Sinopsis: {this.state.detalle.overview}</p>
+              <p className="description">
+                {this.state.detalle.overview}
+              </p>
 
-            <p>Género:{" "} {this.state.detalle.genres && this.state.detalle.genres.length > 0 ? this.state.detalle.genres[0].name : "Sin género"}</p>
+              <p className="mt-0 mb-0">
+                <strong>Calificación:</strong> {this.state.detalle.vote_average}
+              </p>
 
-{document.cookie ? (
-    <button className="btn btn-primary"> Agregar a favoritos</button>
-) : null}
-          </div>
-        </article>
+              <p className="mt-0 mb-0" id="release-date">
+                <strong>Fecha de estreno:</strong>{" "}
+                {this.state.detalle.release_date
+                  ? this.state.detalle.release_date
+                  : this.state.detalle.first_air_date}
+              </p>
+
+              {this.props.match.params.tipo === "movie" ? (
+                <p className="mt-0 mb-0">
+                  <strong>Duración:</strong> {this.state.detalle.runtime} minutos
+                </p>
+              ) : null}
+
+              {this.props.match.params.tipo !== "movie" && (
+                <>
+                  <p className="mt-0 mb-0" id="episodes">
+                    <strong>Número de capítulos:</strong>{" "}
+                    {this.state.detalle.number_of_episodes}
+                  </p>
+
+                  <p className="mt-0 seasons">
+                    <strong>Temporadas:</strong>{" "}
+                    {this.state.detalle.number_of_seasons}
+                  </p>
+                </>
+              )}
+
+              <p className="mt-0 mb-0">
+                <strong>Género:</strong>{" "}
+                {this.state.detalle.genres && this.state.detalle.genres.length > 0 
+                  ? this.state.detalle.genres[0].name 
+                  : "Sin género"}
+              </p>
+
+            </section>
+
+            <img
+              className="col-md-6"
+              src={`https://image.tmdb.org/t/p/w500${this.state.detalle.poster_path}`}
+              alt={this.state.detalle.title || this.state.detalle.name}
+            />
+
+          </section>
+
+          {document.cookie ? (
+            <button className="btn btn-primary mt-3">
+              Agregar a favoritos
+            </button>
+          ) : null}
+
+        </>
       )}
-    </section>
+
+    </div>
   );
 }
 }

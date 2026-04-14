@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function MovieCard(props) {
   return (
     <article className="single-card-movie">
@@ -16,7 +18,9 @@ function MovieCard(props) {
         </p>
 
         <a href="#" className="btn btn-primary">Ver más</a>
-        <a href={`/detalle/${props.tipo}/${props.data.id}`}>Ver detalle</a>
+          <Link 
+          to={`/detalle/${props.tipo}/${props.data.id}`} 
+          className="btn btn-primary">Ver detalle</Link>
 
       </div>
 
