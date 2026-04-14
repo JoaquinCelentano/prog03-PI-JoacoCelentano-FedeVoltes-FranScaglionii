@@ -16,6 +16,11 @@ function MovieCard(props) {
         </p>
 
         <a href="#" className="btn btn-primary">Ver más</a>
+        <a href="/" className="btn btn-primary">
+        
+          Ir al detalle
+        </a>
+
       </div>
 
     </article>

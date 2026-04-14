@@ -58,6 +58,8 @@ class Home extends Component {
         <a href="/movies" className="btn btn-outline-primary mb-4">
           Ver todas
         </a>
+        
+
 
 
        
