@@ -48,7 +48,7 @@ class Home extends Component {
 
           {this.state.populares.map((movie, i) => {
             if (i < 4) {
-              return <MovieCard key={movie.title + i} data={movie} />
+              return <MovieCard key={movie.title + i} data={movie} tipo="movie"/>
             }
             return null;
           })}
@@ -69,7 +69,7 @@ class Home extends Component {
 
           {this.state.cartel.map((movie, i) => {
             if (i < 4) {
-              return <MovieCard key={movie.title + i} data={movie} />
+              return <MovieCard key={movie.title + i} data={movie} tipo="movie" />
             }
             return null;
           })}
