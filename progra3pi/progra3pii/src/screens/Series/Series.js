@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import MovieCard from "../MovieCard/MovieCard";
-import Filter from "../Filter/Filter";
+import MovieCard from "../../components/MovieCard/MovieCard";
+import Filter from "../../components/Filter/Filter";
 
 const apiKey = "5aba41484f01b327ba117f875007574f";
 

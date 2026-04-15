@@ -3,13 +3,13 @@ import Navbar from './components/Navbar/Navbar';
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
-import Home from "./components/Home/Home";
-import Movies from "./components/Movies/Movies";
-import Series from "./components/Series/Series";
-import Favorites from "./components/Favorites/Favorites";
-import Login from './components/Login/Login';
-import Register from './components/Register/Register';
-import Detalle from './components/Detalle/Detalle';
+import Home from "./screens/Home/Home";
+import Movies from "./screens/Movies/Movies";
+import Series from "./screens/Series/Series";
+import Favorites from "./screens/Favorites/Favorites";
+import Login from './screens/Login/Login';
+import Register from './screens/Register/Register';
+import Detalle from './screens/Detalle/Detalle';
 
 
 function App() {
