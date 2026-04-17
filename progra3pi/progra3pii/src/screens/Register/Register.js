@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import Cookies from "universal-cookie";
+
+const cookies = new Cookies();
 
 class Register extends Component {
   constructor(props) {
@@ -29,21 +32,21 @@ class Register extends Component {
 
     if (this.state.userName.length < 3 || this.state.userName.length > 7) {
       this.setState({
-        error: "La extensión del username debe ser de 3 a 7 caracteres"
+        error: "La extensión del nombre de usuario debe ser de 3 a 7 caracteres"
       });
       return;
     }
 
     if (!this.state.email.includes("@")) {
       this.setState({
-        error: "Email mal formateado"
+        error: "Email inválido"
       });
       return;
     }
 
     if (this.state.password.length < 5 || this.state.password.length > 12) {
       this.setState({
-        error: "La extensión del password debe ser de 5 a 12 caracteres"
+        error: "La extensión de la contraseña debe ser de 5 a 12 caracteres"
       });
       return;
     }
@@ -75,8 +78,6 @@ class Register extends Component {
 
       localStorage.setItem("users", usersEnJson);
     }
-
-    document.cookie = "userLogged=true; path=/";
 
     this.setState({ error: "" });
     this.props.history.push("/login");
