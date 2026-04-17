@@ -10,7 +10,7 @@ class Home extends Component {
     super(props);
     this.state = {
       populares: [],
-      cartel: []
+      series: []
     };
   }
 
@@ -25,10 +25,10 @@ class Home extends Component {
       .catch(err => console.log(err));
 
     // peliculas en cartel
-    fetch(`https://api.themoviedb.org/3/movie/now_playing?api_key=${apiKey}`)
+    fetch(`https://api.themoviedb.org/3/tv/popular?api_key=${apiKey}`)
       .then(res => res.json())
       .then(data => {
-        this.setState({ cartel: data.results });
+        this.setState({ series: data.results });
       })
       .catch(err => console.log(err));
   }
@@ -63,20 +63,20 @@ class Home extends Component {
 
 
        
-        <h2 className="alert alert-warning">Películas en cartel</h2>
+        <h2 className="alert alert-warning">Series mas populares</h2>
 
         <section className="row cards">
 
-          {this.state.cartel.map((movie, i) => {
+          {this.state.series.map((serie, i) => {
             if (i < 4) {
-              return <MovieCard key={movie.title + i} data={movie} tipo="movie" />
+              return <MovieCard key={serie.title + i} data={serie} tipo="tv" />
             }
             return null;
           })}
 
         </section>
 
-        <a href="/movies" className="btn btn-outline-warning">
+        <a href="/series" className="btn btn-outline-warning">
           Ver todas
         </a>
 

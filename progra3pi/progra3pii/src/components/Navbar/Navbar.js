@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 function Navbar() {
   return (
      <nav>
-            <h2>JoacoFede Movies</h2>
+            <h2>Movies</h2>
 
             <ul className="nav nav-tabs my-4">
                 <li className="nav-item">
