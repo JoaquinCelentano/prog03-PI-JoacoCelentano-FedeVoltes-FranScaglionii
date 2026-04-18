@@ -1,19 +1,30 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
 
 class Navbar extends Component {
+  logout() {
+    cookies.remove("userLogged");
+    cookies.remove("userLogged");
+    this.props.history.push("/");
+  }
+
   render() {
     const isLogged = cookies.get("userLogged");
 
     let navLinks;
     if (isLogged) {
       navLinks = (
-        <li className="nav-item">
-          <Link to="/favorites" className="nav-link">Favoritas</Link>
-        </li>
+        <React.Fragment>
+          <li className="nav-item">
+            <Link to="/favorites" className="nav-link">Favoritas</Link>
+          </li>
+          <li className="nav-item">
+            <button className="nav-link btn" onClick={() => this.logout()}>Cerrar sesión</button>
+          </li>
+        </React.Fragment>
       );
     } else {
       navLinks = (
@@ -50,4 +61,4 @@ class Navbar extends Component {
   }
 }
 
-export default Navbar;
+export default withRouter(Navbar);
