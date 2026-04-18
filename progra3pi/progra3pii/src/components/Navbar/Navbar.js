@@ -7,7 +7,6 @@ const cookies = new Cookies();
 class Navbar extends Component {
   logout() {
     cookies.remove("userLogged");
-    cookies.remove("userLogged");
     this.props.history.push("/");
   }
 
