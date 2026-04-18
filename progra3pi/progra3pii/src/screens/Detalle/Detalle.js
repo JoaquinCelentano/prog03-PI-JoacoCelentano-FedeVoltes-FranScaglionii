@@ -1,11 +1,15 @@
 import React, { Component } from "react";
+import Cookies from "universal-cookie";
+
 const apiKey ='5aba41484f01b327ba117f875007574f'
+const cookies = new Cookies();
 
 class Detalle extends Component {
     constructor(props){
         super(props);
         this.state = {
-            detalle : null
+            detalle : null,
+            esFavorito: false
         };
     };
 
@@ -16,9 +20,54 @@ componentDidMount() {
       .then((res) => res.json())
       .then((data) => {
         this.setState({ detalle: data });
+        let favoritosStorage = localStorage.getItem("favoritos");
+        if (favoritosStorage === null) return;
+        let favoritosParseado = JSON.parse(favoritosStorage);
+        let subArray;
+        if (this.props.match.params.tipo === "movie") {
+          subArray = favoritosParseado.movies;
+        } else {
+          subArray = favoritosParseado.series;
+        }
+        let coincidencias = subArray.filter(item => item.id === data.id);
+        if (coincidencias.length > 0) {
+          this.setState({ esFavorito: true });
+        }
       })
       .catch((err) => console.log(err));
 }
+
+ponerFavorito() {
+    let favoritosStorage = localStorage.getItem("favoritos");
+    let favoritosParseado;
+    if (favoritosStorage === null) {
+      favoritosParseado = { movies: [], series: [] };
+    } else {
+      favoritosParseado = JSON.parse(favoritosStorage);
+    }
+    let subArray;
+    if (this.props.match.params.tipo === "movie") {
+      subArray = favoritosParseado.movies;
+    } else {
+      subArray = favoritosParseado.series;
+    }
+    let yaEsta = subArray.filter(item => item.id === this.state.detalle.id).length > 0;
+    if (yaEsta) {
+      if (this.props.match.params.tipo === "movie") {
+        favoritosParseado.movies = subArray.filter(item => item.id !== this.state.detalle.id);
+      } else {
+        favoritosParseado.series = subArray.filter(item => item.id !== this.state.detalle.id);
+      }
+    } else {
+      if (this.props.match.params.tipo === "movie") {
+        favoritosParseado.movies.push(this.state.detalle);
+      } else {
+        favoritosParseado.series.push(this.state.detalle);
+      }
+    }
+    localStorage.setItem("favoritos", JSON.stringify(favoritosParseado));
+    this.setState({ esFavorito: !this.state.esFavorito });
+  }
 
 render() {
   return (
@@ -26,7 +75,7 @@ render() {
 
       {this.state.detalle && (
 
-        <>
+        <React.Fragment>
           <h2 className="alert alert-warning">
             {this.state.detalle.title ? this.state.detalle.title : this.state.detalle.name}
           </h2>
@@ -59,7 +108,7 @@ render() {
               ) : null}
 
               {this.props.match.params.tipo !== "movie" && (
-                <>
+                <React.Fragment>
                   <p className="mt-0 mb-0" id="episodes">
                     <strong>Número de capítulos:</strong>{" "}
                     {this.state.detalle.number_of_episodes}
@@ -69,7 +118,7 @@ render() {
                     <strong>Temporadas:</strong>{" "}
                     {this.state.detalle.number_of_seasons}
                   </p>
-                </>
+                </React.Fragment>
               )}
 
               <p className="mt-0 mb-0">
@@ -89,13 +138,13 @@ render() {
 
           </section>
 
-          {document.cookie ? (
-            <button className="btn btn-primary mt-3">
-              Agregar a favoritos
+          { cookies.get("userLogged") ? (
+            <button onClick={() => this.ponerFavorito()} className="btn btn-primary mt-3">
+              {this.state.esFavorito ? "Sacar de favoritos" : "Agregar a favoritos"}
             </button>
-          ) : null}
+          ) : null }
 
-        </>
+        </React.Fragment>
       )}
 
     </div>
