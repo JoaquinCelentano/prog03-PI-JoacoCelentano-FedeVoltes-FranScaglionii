@@ -11,7 +11,7 @@ import Login from './screens/Login/Login';
 import Register from './screens/Register/Register';
 import Detalle from './screens/Detalle/Detalle';
 import ResultadosBusqueda from './screens/ResultadosBusqueda/ResultadosBusqueda';
-import NotFound from "./screens/NotFound/NotFound";
+import NotFound from "./screens/NotFound/NotFound.js";
 
 
 function App() {
@@ -28,7 +28,7 @@ function App() {
     <Route path="/register" component={Register} />
     <Route path="/detalle/:tipo/:id" component={Detalle} />
     <Route path="/busqueda" component={ResultadosBusqueda} />
-    <Route path="*" component={NotFound} />
+    <Route path="" component={NotFound} />
   </Switch>
 
   <Footer />
