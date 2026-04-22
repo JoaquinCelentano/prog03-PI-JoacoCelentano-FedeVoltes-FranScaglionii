@@ -44,7 +44,6 @@ class Movies extends Component {
       <div className="container">
 
         <h2 className="alert alert-primary">Todas las películas</h2>
-        <Filter history={this.props.history} />
 
         <section className="row cards">
 

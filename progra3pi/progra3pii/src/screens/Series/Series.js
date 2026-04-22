@@ -44,8 +44,7 @@ class Series extends Component {
       <div className="container">
 
         <h2 className="alert alert-warning">Todas las series</h2>
-
-        <Filter history={this.props.history} />
+        
 
         <section className="row cards all-series" id="series">
 
