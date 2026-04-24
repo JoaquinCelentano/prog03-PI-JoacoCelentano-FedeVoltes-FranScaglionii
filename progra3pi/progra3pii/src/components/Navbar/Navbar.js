@@ -42,7 +42,7 @@ class Navbar extends Component {
     return (
 
       <div className="container">
-             <h1>DH MAX</h1>
+             <Link to="/" style={{ display: "block", textAlign: "center", padding: "16px 0" }}><img src="/assets/logo/dhmax.png" alt="DH MAX" style={{ height: "120px" }} /></Link>
 
       <nav>
 

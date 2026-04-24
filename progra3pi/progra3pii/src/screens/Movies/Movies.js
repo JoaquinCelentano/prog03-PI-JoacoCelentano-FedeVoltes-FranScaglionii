@@ -60,7 +60,6 @@ class Movies extends Component {
 
         <h2 className="alert alert-primary">Todas las películas</h2>
 
-        {/* 🔥 filtro en vivo */}
         <form className="filter-form px-0 mb-3" onSubmit={(event) => this.evitarSubmit(event)}>
           <input type="text" placeholder="Buscar dentro de la lista" value={this.state.inputBusqueda} onChange={(event) => this.controlarCambios(event)}/>
         </form>
