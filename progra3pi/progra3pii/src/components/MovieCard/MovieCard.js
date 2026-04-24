@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import React, { Component } from "react";
 import Cookies from "universal-cookie";
-
+import "./MovieCard.css";
 
 const cookies = new Cookies()
 

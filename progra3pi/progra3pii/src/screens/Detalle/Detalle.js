@@ -147,7 +147,8 @@ render() {
                 onClick={() => this.ponerFavorito()}
                 className="btn btn-primary mt-3"
               >
-                {this.state.esFavorito ? "Sacar de favoritos" : "Agregar a favoritos"}
+                    {this.state.esFavorito ? "Sacar de favoritos 💔" : "Agregar a favoritos ♥️"}
+
               </button>
             ) : null}
 
