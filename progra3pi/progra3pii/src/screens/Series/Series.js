@@ -10,7 +10,8 @@ class Series extends Component {
     this.state = {
       series: [],
       pagina: 1,
-      Cargando: true   // 🔥 agregado
+      Cargando: true,
+      inputBusqueda: ""
     };
   }
 
@@ -39,22 +40,35 @@ class Series extends Component {
       .catch(err => console.log(err));
   };
 
+  evitarSubmit(event) {
+    event.preventDefault();
+  }
+
+  controlarCambios(event) {
+    this.setState({
+      inputBusqueda: event.target.value
+    });
+  }
+
   render() {
+    let seriesFiltradas = this.state.series.filter(function(serie) {
+      return serie.name.toLowerCase().includes(this.state.inputBusqueda.toLowerCase());
+    }.bind(this));
+
     return (
       <div className="container">
 
         <h2 className="alert alert-warning">Todas las series</h2>
-        
+
+        {/* 🔥 filtro en vivo */}
+        <form className="filter-form px-0 mb-3" onSubmit={(event) => this.evitarSubmit(event)}>
+          <input type="text" placeholder="Buscar dentro de la lista" value={this.state.inputBusqueda} onChange={(event) => this.controlarCambios(event)}/>
+        </form>
 
         <section className="row cards all-series" id="series">
 
           {this.state.Cargando ? (
-
-            <p className="alert alert-info">Cargando...</p>
-
-          ) : (
-
-            this.state.series.map((serie, i) => (
+            <p className="alert alert-info">Cargando...</p> ) : ( seriesFiltradas.map((serie) => (
               <MovieCard key={serie.id} data={serie} tipo="tv" />
             ))
 
