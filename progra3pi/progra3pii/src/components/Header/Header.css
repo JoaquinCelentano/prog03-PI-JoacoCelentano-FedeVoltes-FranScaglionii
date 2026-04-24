@@ -131,6 +131,10 @@ footer p {
     align-items: center;
   }
 
+  .nav .ml-auto {
+    margin-left: 0 !important;
+  }
+
   .search-form {
     grid-template-columns: 1fr;
     row-gap: 10px;
