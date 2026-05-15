@@ -13,36 +13,12 @@ class Navbar extends Component {
 
   render() {
     const isLogged = cookies.get("userLogged");
-
-    let navLinks;
-    if (isLogged) {
-      navLinks = (
-        <React.Fragment>
-          <li className="nav-item">
-            <Link to="/favorites" className="nav-link">Favoritas</Link>
-          </li>
-          <li className="nav-item ml-auto">
-            <button className="nav-link btn" onClick={() => this.logout()}>Cerrar sesión</button>
-          </li>
-        </React.Fragment>
-      );
-    } else {
-      navLinks = (
-        <React.Fragment>
-          <li className="nav-item ml-auto">
-            <Link to="/register" className="nav-link">Registro</Link>
-          </li>
-          <li className="nav-item">
-            <Link to="/login" className="nav-link">Login</Link>
-          </li>
-        </React.Fragment>
-      );
-    }
+    
 
     return (
 
       <div className="container">
-             <Link to="/" style={{ display: "block", textAlign: "center", padding: "16px 0" }}><img src="/assets/logo/dhmax.png" alt="DH MAX" style={{ height: "120px" }} /></Link>
+             <h1></h1>
 
       <nav>
 
@@ -57,7 +33,27 @@ class Navbar extends Component {
             <Link to="/series" className="nav-link">Series</Link>
           </li>
 
-          {navLinks}
+          {isLogged ? (
+        <React.Fragment>
+          <li className="nav-item">
+            <Link to="/favorites" className="nav-link">Favoritas</Link>
+          </li>
+          <li className="nav-item ml-auto">
+            <button className="nav-link btn" onClick={() => this.logout()}>Cerrar sesión</button>
+          </li>
+        </React.Fragment>
+      )
+    :(
+        <React.Fragment>
+          <li className="nav-item ml-auto">
+            <Link to="/register" className="nav-link">Registro</Link>
+          </li>
+          <li className="nav-item">
+            <Link to="/login" className="nav-link">Login</Link>
+          </li>
+        </React.Fragment>
+      )
+    }
         </ul>
       </nav>
       </div>

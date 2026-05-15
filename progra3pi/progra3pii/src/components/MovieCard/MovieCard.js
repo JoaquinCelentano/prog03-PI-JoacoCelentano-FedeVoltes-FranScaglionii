@@ -1,113 +1,122 @@
 import { Link } from "react-router-dom";
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import Cookies from "universal-cookie";
 import "./MovieCard.css";
 
-const cookies = new Cookies()
+const cookies = new Cookies();
 
+function MovieCard(props) {
+  const [mostrarDescripcion, setMostrarDescripcion] = useState(false);
+  const [esFavorito, setEsFavorito] = useState(false);
 
-class MovieCard extends Component{
-
-  constructor (props) {
-    super(props);
-    this.state = {
-      mostrarDescripcion: false,
-      esFavorito: false
-    }
-  }
-  componentDidMount() {
+  useEffect(() => {
     let favoritosStorage = localStorage.getItem("favoritos");
     if (favoritosStorage === null) return;
+
     let favoritosParseado = JSON.parse(favoritosStorage);
     let array;
-    if (this.props.tipo === "movie") {
+
+    if (props.tipo === "movie") 
+      {
       array = favoritosParseado.movies;
-    } else {
+    
+    } 
+    else {
       array = favoritosParseado.series;
     }
-    let coincidencias = array.filter(item => item.id === this.props.data.id);
-    if (coincidencias.length > 0) {
-      this.setState({ esFavorito: true });
-    }
-  }
 
-  ponerFavorito() {
+   
+    let coincidencias = array.filter((item) => item.id === props.data.id);
+
+    if (coincidencias.length > 0) {
+      setEsFavorito(true);
+    }
+  }, []);
+
+  function ponerFavorito() {
     let favoritosStorage = localStorage.getItem("favoritos");
     let favoritosParseado;
+
     if (favoritosStorage === null) {
       favoritosParseado = { movies: [], series: [] };
     } else {
       favoritosParseado = JSON.parse(favoritosStorage);
     }
+
     let array;
-    if (this.props.tipo === "movie") {
+    if (props.tipo === "movie") {
       array = favoritosParseado.movies;
     } else {
       array = favoritosParseado.series;
     }
-    let yaEsta = array.filter(item => item.id === this.props.data.id).length > 0;
+
+    let yaEsta = array.filter((item) => item.id === props.data.id).length > 0;
+
     if (yaEsta) {
-      if (this.props.tipo === "movie") {
-        favoritosParseado.movies = array.filter(item => item.id !== this.props.data.id);
+      if (props.tipo === "movie") {
+        favoritosParseado.movies = array.filter(
+          (item) => item.id !== props.data.id
+        );
       } else {
-        favoritosParseado.series = array.filter(item => item.id !== this.props.data.id);
+        favoritosParseado.series = array.filter(
+          (item) => item.id !== props.data.id
+        );
       }
     } else {
-      if (this.props.tipo === "movie") {
-        favoritosParseado.movies.push(this.props.data);
+      if (props.tipo === "movie") {
+        favoritosParseado.movies.push(props.data);
       } else {
-        favoritosParseado.series.push(this.props.data);
+        favoritosParseado.series.push(props.data);
       }
     }
+
     localStorage.setItem("favoritos", JSON.stringify(favoritosParseado));
-    this.setState({ esFavorito: !this.state.esFavorito });
+    setEsFavorito(!esFavorito);
   }
 
-  botonVerMas() {
-    this.setState({
-      mostrarDescripcion: !this.state.mostrarDescripcion
-    })
+  function botonVerMas() {
+    setMostrarDescripcion(!mostrarDescripcion);
   }
 
-  render(){
   return (
     <article className="single-card-movie">
-
       <img
-        src={"https://image.tmdb.org/t/p/w500" + this.props.data.poster_path}
+        src={"https://image.tmdb.org/t/p/w500" + props.data.poster_path}
         className="card-img-top"
-        alt={this.props.data.title ? this.props.data.title : this.props.data.name}
+        alt={props.data.title ? props.data.title : props.data.name}
       />
 
       <div className="cardBody">
-        <h5 className="card-title">{this.props.data.title ? this.props.data.title : this.props.data.name}</h5>
+        <h5 className="card-title">
+          {props.data.title ? props.data.title : props.data.name}
+        </h5>
 
-{
-  this.state.mostrarDescripcion && (
-    <p className="card-text">
-      {this.props.data.overview}
-    </p>
-  )
-}
+        {mostrarDescripcion && (
+          <p className="card-text">{props.data.overview}</p>
+        )}
 
-        <button onClick={() => this.botonVerMas()} className="btn btn-primary">{this.state.mostrarDescripcion ? "Ver menos" : "Ver más"}</button>
-          <Link 
-          to={`/detalle/${this.props.tipo}/${this.props.data.id}`} 
-          className="btn btn-primary">Ver detalle</Link>
+        <button onClick={() => botonVerMas()} className="btn btn-primary">
+          {mostrarDescripcion ? "Ver menos" : "Ver más"}
+        </button>
 
-          { cookies.get("userLogged") ? (
-  <button 
-    onClick={() => this.ponerFavorito()} 
-    className="btn btn-primary">
-    {this.state.esFavorito ? "💔" : "♥️"}
-  </button>
-) : null }
+        <Link
+          to={`/detalle/${props.tipo}/${props.data.id}`}
+          className="btn btn-primary"
+        >
+          Ver detalle
+        </Link>
 
+        {cookies.get("userLogged") ? (
+          <button
+            onClick={() => ponerFavorito()}
+            className="btn btn-primary"
+          >
+            {esFavorito ? "💔" : "♥️"}
+          </button>
+        ) : null}
       </div>
-
     </article>
-  )
-}
+  );
 }
 
 export default MovieCard;
