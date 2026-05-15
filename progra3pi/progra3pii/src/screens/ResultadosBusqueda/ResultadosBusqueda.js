@@ -1,61 +1,55 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import MovieCard from "../../components/MovieCard/MovieCard";
 
-const apiKey ='5aba41484f01b327ba117f875007574f'
+const apiKey = "5aba41484f01b327ba117f875007574f";
 
-class ResultadosBusqueda extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      resultados: [],
-      texto: "",
-      tipo: "",
-      cargando: true
-    };
-  }
+function ResultadosBusqueda(props) {
+  const [resultados, setResultados] = useState([]);
+  const [texto, setTexto] = useState("");
+  const [tipo, setTipo] = useState("");
+  const [cargando, setCargando] = useState(true);
 
-  componentDidMount() {
-    const texto = this.props.match.params.texto;
-    const tipo = this.props.match.params.tipo;
+  useEffect(() => {
+    const textoParam = props.match.params.texto;
+    const tipoParam = props.match.params.tipo;
 
     let endpoint = "";
 
-    if (tipo === "movie") {
+    if (tipoParam === "movie") {
       endpoint = "movie";
     } else {
       endpoint = "tv";
     }
 
-    fetch(`https://api.themoviedb.org/3/search/${endpoint}?api_key=${apiKey}&query=${texto}`)
-      .then(res => res.json())
-      .then(data => {
-        this.setState({
-          resultados: data.results ? data.results : [],
-          texto: texto,
-          tipo: tipo,
-          cargando: false
-        });
+    fetch(`https://api.themoviedb.org/3/search/${endpoint}?api_key=${apiKey}&query=${textoParam}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setResultados(data.results ? data.results : []);
+        setTexto(textoParam);
+        setTipo(tipoParam);
+        setCargando(false);
       })
-      .catch(err => console.log(err));
-  }
+      .catch((err) => console.log(err));
+  }, []);
 
-  render() {
-    return (
-      <div className="container">
-        <h2 className="alert alert-primary">Resultados de búsqueda</h2>
+  return (
+    <div className="container">
+      <h2 className="alert alert-primary">Resultados de búsqueda</h2>
 
-        <p>Buscaste: {this.state.texto}</p>
-        {this.state.cargando ? (<p>Cargando...</p>) : this.state.resultados.length === 0 ? (<p>No se encontraron resultados.</p>) : (
-          
-          <section className="row cards">
-            {this.state.resultados.map((resultado, i) => (
-              <MovieCard key={resultado.id + i} data={resultado} tipo={this.state.tipo} />
-            ))}
-          </section>
-        )}
-      </div>
-    );
-  }
+      <p>Buscaste: {texto}</p>
+      {cargando ? (
+        <p>Cargando...</p>
+      ) : resultados.length === 0 ? (
+        <p>No se encontraron resultados.</p>
+      ) : (
+        <section className="row cards">
+          {resultados.map((resultado, i) => (
+            <MovieCard key={resultado.id + i} data={resultado} tipo={tipo} />
+          ))}
+        </section>
+      )}
+    </div>
+  );
 }
 
 export default ResultadosBusqueda;
