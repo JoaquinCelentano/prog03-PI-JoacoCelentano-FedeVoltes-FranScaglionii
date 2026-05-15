@@ -1,166 +1,169 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import Cookies from "universal-cookie";
 
-const apiKey ='5aba41484f01b327ba117f875007574f'
+const apiKey = "5aba41484f01b327ba117f875007574f";
 const cookies = new Cookies();
 
-class Detalle extends Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            detalle : null,
-            esFavorito: false,
-            Cargando: true
-        };
-    };
+function Detalle(props) {
+  const [detalle, setDetalle] = useState(null);
+  const [esFavorito, setEsFavorito] = useState(false);
+  const [cargando, setCargando] = useState(true);
 
-componentDidMount() {
-    let id = this.props.match.params.id;
-    let tipo = this.props.match.params.tipo;
+  useEffect(() => {
+    let id = props.match.params.id;
+    let tipo = props.match.params.tipo;
+
     fetch(`https://api.themoviedb.org/3/${tipo}/${id}?api_key=${apiKey}`)
       .then((res) => res.json())
       .then((data) => {
-        this.setState({ detalle: data, Cargando: false });
+        setDetalle(data);
+        setCargando(false);
+
         let favoritosStorage = localStorage.getItem("favoritos");
-        if (favoritosStorage === null) return;
+
+        if (favoritosStorage === null) {
+          return;
+        }
+
         let favoritosParseado = JSON.parse(favoritosStorage);
+
         let subArray;
-        if (this.props.match.params.tipo === "movie") {
+
+        if (tipo === "movie") {
           subArray = favoritosParseado.movies;
         } else {
           subArray = favoritosParseado.series;
         }
-        let coincidencias = subArray.filter(item => item.id === data.id);
+
+        let coincidencias = subArray.filter((item) => item.id === data.id);
+
         if (coincidencias.length > 0) {
-          this.setState({ esFavorito: true });
+          setEsFavorito(true);
         }
       })
       .catch((err) => console.log(err));
-}
+  }, []);
 
-ponerFavorito() {
+  function ponerFavorito() {
     let favoritosStorage = localStorage.getItem("favoritos");
     let favoritosParseado;
+
     if (favoritosStorage === null) {
       favoritosParseado = { movies: [], series: [] };
     } else {
       favoritosParseado = JSON.parse(favoritosStorage);
     }
+
+    let tipo = props.match.params.tipo;
     let subArray;
-    if (this.props.match.params.tipo === "movie") {
+
+    if (tipo === "movie") {
       subArray = favoritosParseado.movies;
     } else {
       subArray = favoritosParseado.series;
     }
-    let yaEsta = subArray.filter(item => item.id === this.state.detalle.id).length > 0;
+
+    let yaEsta = subArray.filter((item) => item.id === detalle.id).length > 0;
+
     if (yaEsta) {
-      if (this.props.match.params.tipo === "movie") {
-        favoritosParseado.movies = subArray.filter(item => item.id !== this.state.detalle.id);
+      if (tipo === "movie") {
+        favoritosParseado.movies = subArray.filter(
+          (item) => item.id !== detalle.id
+        );
       } else {
-        favoritosParseado.series = subArray.filter(item => item.id !== this.state.detalle.id);
+        favoritosParseado.series = subArray.filter(
+          (item) => item.id !== detalle.id
+        );
       }
     } else {
-      if (this.props.match.params.tipo === "movie") {
-        favoritosParseado.movies.push(this.state.detalle);
+      if (tipo === "movie") {
+        favoritosParseado.movies.push(detalle);
       } else {
-        favoritosParseado.series.push(this.state.detalle);
+        favoritosParseado.series.push(detalle);
       }
     }
+
     localStorage.setItem("favoritos", JSON.stringify(favoritosParseado));
-    this.setState({ esFavorito: !this.state.esFavorito });
+
+    setEsFavorito(!esFavorito);
   }
 
-render() {
   return (
     <div className="container">
-
-      {this.state.Cargando ? (
-
+      {cargando ? (
         <p className="alert alert-info">Cargando...</p>
-
       ) : (
-      
-
-        this.state.detalle && (
-
+        detalle && (
           <React.Fragment>
-
             <h2 className="alert alert-warning">
-              {this.state.detalle.title ? this.state.detalle.title : this.state.detalle.name}
+              {detalle.title ? detalle.title : detalle.name}
             </h2>
 
             <section className="row">
-
               <section className="col-md-6 info">
-
                 <h3>Descripción</h3>
 
-                <p className="description">
-                  {this.state.detalle.overview}
-                </p>
+                <p className="description">{detalle.overview}</p>
 
                 <p className="mt-0 mb-0">
-                  <strong>Calificación:</strong> {this.state.detalle.vote_average}
+                  <strong>Calificación:</strong> {detalle.vote_average}
                 </p>
 
                 <p className="mt-0 mb-0" id="release-date">
                   <strong>Fecha de estreno:</strong>{" "}
-                  {this.state.detalle.release_date
-                    ? this.state.detalle.release_date
-                    : this.state.detalle.first_air_date}
+                  {detalle.release_date
+                    ? detalle.release_date
+                    : detalle.first_air_date}
                 </p>
 
-                {this.props.match.params.tipo === "movie" ? (
+                {props.match.params.tipo === "movie" ? (
                   <p className="mt-0 mb-0">
-                    <strong>Duración:</strong> {this.state.detalle.runtime} minutos
+                    <strong>Duración:</strong> {detalle.runtime} minutos
                   </p>
                 ) : (
                   <React.Fragment>
                     <p className="mt-0 mb-0">
-                      <strong>Capítulos:</strong> {this.state.detalle.number_of_episodes}
+                      <strong>Capítulos:</strong>{" "}
+                      {detalle.number_of_episodes}
                     </p>
+
                     <p className="mt-0 mb-0">
-                      <strong>Temporadas:</strong> {this.state.detalle.number_of_seasons}
+                      <strong>Temporadas:</strong>{" "}
+                      {detalle.number_of_seasons}
                     </p>
                   </React.Fragment>
                 )}
 
                 <p className="mt-0 mb-0">
                   <strong>Género:</strong>{" "}
-                  {this.state.detalle.genres && this.state.detalle.genres.length > 0
-                    ? this.state.detalle.genres[0].name
+                  {detalle.genres && detalle.genres.length > 0
+                    ? detalle.genres[0].name
                     : "Sin género"}
                 </p>
-
               </section>
 
               <img
                 className="col-md-6"
-                src={`https://image.tmdb.org/t/p/w500${this.state.detalle.poster_path}`}
-                alt={this.state.detalle.title || this.state.detalle.name}
+                src={`https://image.tmdb.org/t/p/w500${detalle.poster_path}`}
+                alt={detalle.title || detalle.name}
               />
-
             </section>
 
             {cookies.get("userLogged") ? (
               <button
-                onClick={() => this.ponerFavorito()}
+                onClick={() => ponerFavorito()}
                 className="btn btn-primary mt-3"
               >
-                    {this.state.esFavorito ? "Sacar de favoritos 💔" : "Agregar a favoritos ♥️"}
-
+                {esFavorito
+                  ? "Sacar de favoritos 💔"
+                  : "Agregar a favoritos ♥️"}
               </button>
             ) : null}
-
           </React.Fragment>
-
         )
-
       )}
-
     </div>
   );
 }
 
-} 
 export default Detalle;
